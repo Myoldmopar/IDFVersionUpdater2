@@ -6,7 +6,7 @@ A super simple wxPython-based IDFVersionUpdater tool
 
 Project is documented on ReadTheDocs.
 
-# Testing [![Testing Status](https://travis-ci.org/Myoldmopar/EPLaunchLight.svg?branch=master)](http://travis-ci.org/Myoldmopar/EPLaunchLight)
+# Testing [![Testing Status](https://travis-ci.org/Myoldmopar/IDFVersionUpdater2.svg?branch=master)](http://travis-ci.org/Myoldmopar/IDFVersionUpdater2)
 
 Project is continually tested using Travis CI.
 
