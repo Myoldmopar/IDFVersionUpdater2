@@ -2,6 +2,8 @@ import os
 import sys
 import unittest
 # import threading
+# TODO: Lots more testing
+
 
 # add the source directory to the path so the unit test framework can find it
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'IDFVersionUpdater'))

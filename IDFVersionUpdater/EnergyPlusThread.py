@@ -4,6 +4,7 @@ import subprocess
 import threading
 
 from International import translate as _
+# TODO: Add option to keep all intermediate files, not just the original -- use version numbers
 
 
 class EnergyPlusThread(threading.Thread):

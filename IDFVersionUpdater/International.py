@@ -1,7 +1,7 @@
 class Languages:
-    English = 'english'
-    Spanish = 'spanish'
-    French = 'french'
+    English = 301  # 'english'
+    Spanish = 302  # 'spanish'
+    French = 303  # 'french'
 
 
 CurrentLanguage = Languages.English

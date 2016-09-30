@@ -27,8 +27,7 @@ class VersionUpdaterWindow(wx.Frame):
         wx.Frame.__init__(self, None, title=__program_name__, size=(600, 183))
         self.SetMinSize((400, 175))
 
-        # load the settings here very early
-        # TODO: Make this cross platform
+        # load the settings here very early; the tilde is cross platform thanks to Python
         self.settings_file_name = os.path.join(os.path.expanduser("~"), ".idfversionupdater.json")
         self.settings = load_settings(self.settings_file_name)
 
@@ -40,7 +39,6 @@ class VersionUpdaterWindow(wx.Frame):
         _doing_restart = False
 
         # initialize instance variables to be set later
-        # TODO: Make sure these are all actually used
         self.btn_select_idf = None
         self.btn_about = None
         self.lbl_path = None
@@ -138,12 +136,12 @@ class VersionUpdaterWindow(wx.Frame):
         menu_bar = wx.MenuBar()
         menu1 = wx.Menu()
         # create the actual actionable items under the language menu
-        menu1.Append(103, "English", "Change language to English")
-        self.Bind(wx.EVT_MENU, self.switch_language, id=103)
-        menu1.Append(104, "Spanish", "Change language to Spanish")
-        self.Bind(wx.EVT_MENU, self.switch_language, id=104)
-        menu1.Append(105, "French", "Change language to French")
-        self.Bind(wx.EVT_MENU, self.switch_language, id=105)
+        menu1.Append(Languages.English, "English", "Change language to English")
+        self.Bind(wx.EVT_MENU, self.switch_language, id=Languages.English)
+        menu1.Append(Languages.Spanish, "Spanish", "Change language to Spanish")
+        self.Bind(wx.EVT_MENU, self.switch_language, id=Languages.Spanish)
+        menu1.Append(Languages.French, "French", "Change language to French")
+        self.Bind(wx.EVT_MENU, self.switch_language, id=Languages.French)
         menu1.AppendSeparator()
         menu1.Append(106, "&Close\tCtrl+W", "Closes the window")
         self.Bind(wx.EVT_MENU, self.on_close, id=106)
@@ -241,14 +239,7 @@ class VersionUpdaterWindow(wx.Frame):
     def switch_language(self, event):
         global _doing_restart
         this_id = event.GetId()
-        language = Languages.English
-        # TODO: Change these IDs - make the Language enum in International.py into an enum of ID numbers, no more strings
-        if this_id == 103:
-            language = Languages.English
-        elif this_id == 104:
-            language = Languages.Spanish
-        elif this_id == 105:
-            language = Languages.French
+        language = this_id
         self.settings[Keys.language] = language
         message = wx.MessageDialog(
             parent=self,
@@ -269,14 +260,12 @@ class VersionUpdaterWindow(wx.Frame):
         idf = self.lbl_path.GetValue()
         self.settings[Keys.last_idf] = idf
         if os.path.exists(idf):
-            # TODO: Change this message to write to the status bar instead
-            print("File exists, ready to go")
+            self.on_msg("IDF File exists, ready to go")
             self.idf_version = EnergyPlusPath.get_idf_version(idf)
             self.lbl_old_version.SetLabel("%s: %s" % (_('Old Version'), self.idf_version))
             self.btn_update_file.Enable()
         else:
-            # TODO: Status bar this, also status bar other things, methinks
-            print("File doesn't exist")
+            self.on_msg("IDF File doesn't exist at path given; cannot transition")
             self.btn_update_file.Disable()
 
 # TODO: Add a progress bar to allow watching the individual transition runs go
