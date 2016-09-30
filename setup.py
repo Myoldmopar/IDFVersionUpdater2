@@ -11,7 +11,8 @@ APP = ['IDFVersionUpdater.py']
 DATA_FILES = []
 OPTIONS = {
     'argv_emulation': True,
-    'includes': ['wx']
+    'iconfile':'resources/ep-logo-3d-transparent.icns',
+    'includes': ['wx', 'subprocess']
 }
 
 setup(

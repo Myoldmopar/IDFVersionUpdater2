@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import threading
 
@@ -6,56 +7,52 @@ from International import translate as _
 
 
 class EnergyPlusThread(threading.Thread):
-    def __init__(self, run_script, input_file, weather_file, msg_callback, success_callback, failure_callback,
-                 cancelled_callback):
+    def __init__(self, transitions_to_run, working_directory, original_file_path, keep_old, msg_callback, done_callback):
         self.p = None
         self.std_out = None
         self.std_err = None
-        self.run_script = run_script
-        self.input_file = input_file
-        self.weather_file = weather_file
+        self.transitions = transitions_to_run
+        self.run_dir = working_directory
+        self.input_file = original_file_path
+        self.keep_old = keep_old
         self.msg_callback = msg_callback
-        self.success_callback = success_callback
-        self.failure_callback = failure_callback
-        self.cancelled_callback = cancelled_callback
+        self.done_callback = done_callback
         self.cancelled = False
-        self.run_dir = ''
         threading.Thread.__init__(self)
 
     def run(self):
         self.cancelled = False
-        base_file_name = os.path.splitext(os.path.basename(self.input_file))[0]
-        self.run_dir = os.path.join(os.path.dirname(self.input_file), 'output-' + base_file_name)
-        command_line_tokens = [
-            self.run_script,
-            '-r',
-            '-x',
-            '-m',
-            '-p',
-            base_file_name,
-            '-d',
-            self.run_dir,
-            '-w',
-            self.weather_file,
-            self.input_file
-        ]
-        self.p = subprocess.Popen(
-            command_line_tokens,
-            shell=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        self.msg_callback(_("Simulation started"))
-        self.std_out, self.std_err = self.p.communicate()
-        if self.cancelled:
-            self.msg_callback(_("Simulation cancelled"))
-            self.cancelled_callback()
-        else:
-            if self.p.returncode == 0:
-                self.msg_callback(_("Simulation completed"))
-                self.success_callback(self.std_out, self.run_dir)
+        shutil.copy(self.input_file, self.run_dir)
+        base_file_name = os.path.basename(self.input_file)
+        if self.keep_old:
+            shutil.copyfile(self.input_file, os.path.join(self.run_dir, 'before-transition-'+base_file_name))
+        for tr in self.transitions:
+            command_line_tokens = [
+                tr.full_path_to_binary,
+                base_file_name,
+            ]
+            self.p = subprocess.Popen(
+                command_line_tokens,
+                shell=False,
+                cwd=self.run_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
+            self.msg_callback(_("Running Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
+            self.std_out, self.std_err = self.p.communicate()
+            if self.cancelled:
+                self.msg_callback(_("Transition Cancelled"))
+                # self.cancelled_callback()
             else:
-                self.msg_callback(_("Simulation failed"))
-                self.failure_callback(self.std_out, self.run_dir, subprocess.list2cmdline(command_line_tokens))
+                if self.p.returncode == 0:
+                    self.msg_callback(
+                        _("Completed Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
+                    # self.success_callback(self.std_out, self.run_dir)
+                else:
+                    self.msg_callback(
+                        _("Failed Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
+                    break
+                    # self.failure_callback(self.std_out, self.run_dir, subprocess.list2cmdline(command_line_tokens))
+        self.done_callback(_("All transitions completed successfully - Open run directory for transitioned file"))
 
     @staticmethod
     def get_ep_version(run_script):

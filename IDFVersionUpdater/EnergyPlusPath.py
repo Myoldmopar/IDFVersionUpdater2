@@ -1,4 +1,16 @@
 import glob
+import os
+
+
+class TransitionBinary(object):
+    def __init__(self, full_path):
+        self.full_path_to_binary = full_path
+        try:
+            self.binary_name = os.path.basename(full_path)
+            self.source_version = float(self.binary_name[12:15].replace('-', '.'))
+            self.target_version = float(self.binary_name[22:25].replace('-', '.'))
+        except Exception:
+            print("Could not process transition binary at: " + full_path)
 
 
 class EnergyPlusPath(object):
@@ -36,3 +48,44 @@ class EnergyPlusPath(object):
         # set current_entry to something meaningful if needed
         new_version = ep_versions[-1]
         return EnergyPlusPath.get_path_from_version_number(new_version)
+
+    @staticmethod
+    def get_transition_run_dir(eplus_install_directory):
+        return os.path.join(eplus_install_directory, 'PreProcess', 'IDFVersionUpdater')
+
+    @staticmethod
+    def get_transitions_available(transition_run_directory):
+        binary_paths = glob.glob(os.path.join(transition_run_directory, 'Transition-V*'))
+        return [TransitionBinary(x) for x in binary_paths]
+
+    @staticmethod
+    def get_idf_version(path_to_idf):
+        # phase 1: read in lines of file
+        with open(path_to_idf, "r") as fo:
+            lines = fo.readlines()
+        # phases 2: remove comments and blank lines
+        lines_a = []
+        for line in lines:
+            line_text = line.strip()
+            this_line = ""
+            if len(line_text) > 0:
+                exclamation = line_text.find("!")
+                if exclamation == -1:
+                    this_line = line_text
+                elif exclamation == 0:
+                    this_line = ""
+                elif exclamation > 0:
+                    this_line = line_text[:exclamation]
+                if not this_line == "":
+                    lines_a.append(this_line)
+        # phase 3: join entire array and re-split by semicolon
+        idf_data_joined = ''.join(lines_a)
+        idf_object_strings = idf_data_joined.split(";")
+        # phase 4: break each object into an array of object name and field values
+        for this_object in idf_object_strings:
+            tokens = this_object.split(',')
+            if tokens[0].upper() == "VERSION":
+                version_string = tokens[1]
+                version_string_tokens = version_string.split('.')  # might be 2 or 3...
+                version_number = float("%s.%s" % (version_string_tokens[0], version_string_tokens[1]))
+                return version_number
