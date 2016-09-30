@@ -1,5 +1,8 @@
 import glob
 import os
+# TODO: Clean out unused functions here
+# TODO: Really nice to just make this a full class instead of just a collection of static functions
+# TODO: Cross platform this whole thing
 
 
 class TransitionBinary(object):
@@ -28,6 +31,7 @@ class EnergyPlusPath(object):
         * path: An installation path on Mac, following the form: '/Applications/EnergyPlus-?-?-?/'
         * Returns: Just the version number suffix, in the form: '?-?-?'
         """
+        # TODO: Cross platform
         ep_folder = path.split('/')[2]
         if 'EnergyPlus' not in ep_folder:
             return None

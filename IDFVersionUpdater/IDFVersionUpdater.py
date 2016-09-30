@@ -28,6 +28,7 @@ class VersionUpdaterWindow(wx.Frame):
         self.SetMinSize((400, 175))
 
         # load the settings here very early
+        # TODO: Make this cross platform
         self.settings_file_name = os.path.join(os.path.expanduser("~"), ".idfversionupdater.json")
         self.settings = load_settings(self.settings_file_name)
 
@@ -39,6 +40,7 @@ class VersionUpdaterWindow(wx.Frame):
         _doing_restart = False
 
         # initialize instance variables to be set later
+        # TODO: Make sure these are all actually used
         self.btn_select_idf = None
         self.btn_about = None
         self.lbl_path = None
@@ -194,7 +196,6 @@ class VersionUpdaterWindow(wx.Frame):
         message.Destroy()
 
     def on_update_idf(self, event):
-        print("on_update_idf")
         if self.idf_version not in [tr.source_version for tr in self.transitions_available]:
             self.on_msg("Cannot find a matching transition tool for this idf version")
         # we need to build up the list of transition steps to perform
@@ -235,13 +236,13 @@ class VersionUpdaterWindow(wx.Frame):
         self.set_buttons_for_running(enabled=True)
 
     def on_close(self, event):
-        print("Closing")
         self.Close(False)
 
     def switch_language(self, event):
         global _doing_restart
         this_id = event.GetId()
         language = Languages.English
+        # TODO: Change these IDs - make the Language enum in International.py into an enum of ID numbers, no more strings
         if this_id == 103:
             language = Languages.English
         elif this_id == 104:
@@ -257,24 +258,26 @@ class VersionUpdaterWindow(wx.Frame):
             style=wx.YES_NO | wx.CENTRE | wx.ICON_QUESTION)
         resp = message.ShowModal()
         if resp == wx.ID_YES:
-            print("Changing language to: " + language)
             _doing_restart = True
         message.Destroy()
         if doing_restart():
             self.Close(False)
 
     def check_file_paths(self, event):
-        print("Checking file paths")
         if self.lbl_path is None or self.btn_update_file is None:
-            print("Label or button are \"None\", we are probably doing early GUI inits, skipping for now...")
             return
         idf = self.lbl_path.GetValue()
         self.settings[Keys.last_idf] = idf
         if os.path.exists(idf):
+            # TODO: Change this message to write to the status bar instead
             print("File exists, ready to go")
             self.idf_version = EnergyPlusPath.get_idf_version(idf)
             self.lbl_old_version.SetLabel("%s: %s" % (_('Old Version'), self.idf_version))
             self.btn_update_file.Enable()
         else:
+            # TODO: Status bar this, also status bar other things, methinks
             print("File doesn't exist")
             self.btn_update_file.Disable()
+
+# TODO: Add a progress bar to allow watching the individual transition runs go
+# TODO: Add a cancel button, just steal it from the EPLaunchLite code

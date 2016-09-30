@@ -15,6 +15,7 @@ OPTIONS = {
     'includes': ['wx', 'subprocess']
 }
 
+# TODO: Add cross platform (py2deb, py2exe) support
 setup(
     app=APP,
     data_files=DATA_FILES,

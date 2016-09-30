@@ -1,5 +1,7 @@
 os:
 - osx
+language:
+  objective-c  # so that Travis' Linter doesn't bark
 before_install:
 - brew update
 install:
@@ -9,7 +11,7 @@ script:
 - make tests
 - make package
 - cd dist/
-- zip -r IDFVersionUpdater2.app.zip IDFVersionUpdater.app/
+- zip -r IDFVersionUpdater.app.zip IDFVersionUpdater.app/
 - cd -
 deploy:
   provider: releases
