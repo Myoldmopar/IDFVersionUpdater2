@@ -7,10 +7,12 @@ install:
 - pip install py2app
 script:
 - make package
+- cd dist/
+- zip -r IDFVersionUpdater2.app.zip IDFVersionUpdater.app/
 deploy:
   provider: releases
   skip_cleanup: true
-  file: dist/IDFVersionUpdater.app
+  file: dist/IDFVersionUpdater.app.zip
   on:
     tags: true
   api-key:
