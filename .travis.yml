@@ -10,6 +10,7 @@ script:
 - make package
 - cd dist/
 - zip -r IDFVersionUpdater2.app.zip IDFVersionUpdater.app/
+- cd -
 deploy:
   provider: releases
   skip_cleanup: true

@@ -26,6 +26,7 @@ class EnergyPlusThread(threading.Thread):
         base_file_name = os.path.basename(self.input_file)
         if self.keep_old:
             shutil.copyfile(self.input_file, os.path.join(self.run_dir, 'before-transition-'+base_file_name))
+        failed = False
         for tr in self.transitions:
             command_line_tokens = [
                 tr.full_path_to_binary,
@@ -46,13 +47,15 @@ class EnergyPlusThread(threading.Thread):
                 if self.p.returncode == 0:
                     self.msg_callback(
                         _("Completed Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
-                    # self.success_callback(self.std_out, self.run_dir)
                 else:
                     self.msg_callback(
                         _("Failed Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
+                    failed = True
                     break
-                    # self.failure_callback(self.std_out, self.run_dir, subprocess.list2cmdline(command_line_tokens))
-        self.done_callback(_("All transitions completed successfully - Open run directory for transitioned file"))
+        if failed:
+            self.done_callback(_("Transition Failed! - Open run directory to read latest audit/error/etc"))
+        else:
+            self.done_callback(_("All transitions completed successfully - Open run directory for transitioned file"))
 
     @staticmethod
     def get_ep_version(run_script):
