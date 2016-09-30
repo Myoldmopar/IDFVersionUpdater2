@@ -6,6 +6,7 @@ install:
 - brew install python wxpython
 - pip install py2app
 script:
+- make tests
 - make package
 - cd dist/
 - zip -r IDFVersionUpdater2.app.zip IDFVersionUpdater.app/

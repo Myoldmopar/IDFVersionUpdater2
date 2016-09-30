@@ -9,3 +9,6 @@ html:
 
 listimports:
 	grep -r '^import' --include="*.py" * | cut -d: -f2 | sort | uniq | cut -c 8-
+
+tests:
+	python test/test_base.py
