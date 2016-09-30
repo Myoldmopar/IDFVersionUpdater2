@@ -9,7 +9,7 @@ install:
 - pip install py2app
 script:
 - make tests
-- make package
+- make app
 - cd dist/
 - zip -r IDFVersionUpdater.app.zip IDFVersionUpdater.app/
 - cd -

@@ -1,8 +1,14 @@
 clean:
 	rm -rf build/ dist/
 
-package:
+app:
 	python setup.py py2app
+
+deb:
+	python setup.py py2deb
+
+exe:
+	python setup.py py2exe
 
 html:
 	make -C docs html
