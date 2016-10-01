@@ -4,8 +4,8 @@ clean:
 app:
 	python setup.py py2app
 
-#deb:
-#	python setup.py py2deb
+deb:
+	python setup.py py2deb
 
 #exe:
 #	python setup.py py2exe

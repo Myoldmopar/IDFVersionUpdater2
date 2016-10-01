@@ -1,22 +1,24 @@
 os:
 - osx
-language:
-  objective-c  # so that Travis' Linter doesn't bark
+- linux
 before_install:
-- brew update
+- [[ "$TRAVIS_OS_NAME" == "osx" ]] && brew update
 install:
-- brew install python wxpython
-- pip install py2app
+- [[ "$TRAVIS_OS_NAME" == "osx" ]] && brew install python wxpython
+- [[ "$TRAVIS_OS_NAME" == "osx" ]] && pip install py2app
+- [[ "$TRAVIS_OS_NAME" == "linux" ]] && pip install py2deb
 script:
 - make tests
-- make app
+- [[ "$TRAVIS_OS_NAME" == "osx" ]] && make app
+- [[ "$TRAVIS_OS_NAME" == "linux" ]] && make deb
 - cd dist/
-- zip -r IDFVersionUpdater.app.zip IDFVersionUpdater.app/
+- [[ "$TRAVIS_OS_NAME" == "osx" ]] && zip -r IDFVersionUpdater.zip IDFVersionUpdater.app/
+- [[ "$TRAVIS_OS_NAME" == "linux" ]] && zip -r IDFVersionUpdater.deb IDFVersionUpdater.app/
 - cd -
 deploy:
   provider: releases
   skip_cleanup: true
-  file: dist/IDFVersionUpdater.app.zip
+  file: dist/IDFVersionUpdater.zip
   on:
     tags: true
   api-key:
