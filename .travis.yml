@@ -1,19 +1,15 @@
 os:
 - osx
-- linux
 before_install:
-- [[ "$TRAVIS_OS_NAME" == "osx" ]] && brew update
+- brew update
 install:
-- [[ "$TRAVIS_OS_NAME" == "osx" ]] && brew install python wxpython
-- [[ "$TRAVIS_OS_NAME" == "osx" ]] && pip install py2app
-- [[ "$TRAVIS_OS_NAME" == "linux" ]] && pip install py2deb
+- brew install python wxpython
+- pip install py2app
 script:
 - make tests
-- [[ "$TRAVIS_OS_NAME" == "osx" ]] && make app
-- [[ "$TRAVIS_OS_NAME" == "linux" ]] && make deb
+- make app
 - cd dist/
-- [[ "$TRAVIS_OS_NAME" == "osx" ]] && zip -r IDFVersionUpdater.zip IDFVersionUpdater.app/
-- [[ "$TRAVIS_OS_NAME" == "linux" ]] && zip -r IDFVersionUpdater.deb IDFVersionUpdater.app/
+- zip -r IDFVersionUpdater.zip idfversionupdater.app/
 - cd -
 deploy:
   provider: releases

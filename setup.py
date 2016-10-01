@@ -8,7 +8,7 @@ py2app_options = {'argv_emulation': True,
                   'includes': ['wx', 'subprocess'],
                   'iconfile': 'resources/ep-logo-3d-transparent.icns'}
 setup(
-    name='IDFVersionUpdater',
+    name='idfversionupdater',
     description='A wxPython-based tool for transition EnergyPlus input files',
     url='https://github.com/myoldmopar/idfversionupdater2',
     author='Edwin Lee via NREL via United States Department of Energy',
