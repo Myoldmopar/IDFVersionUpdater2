@@ -1,1 +1,1 @@
-py2app
+# py2app
