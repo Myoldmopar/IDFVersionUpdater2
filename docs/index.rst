@@ -9,8 +9,8 @@ Contents:
 
    EnergyPlusPath
    EnergyPlusThread
-   FileTypes
    IDFVersionUpdater
+   International
 
 
 Indices and tables

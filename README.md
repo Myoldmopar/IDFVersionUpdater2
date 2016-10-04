@@ -2,7 +2,7 @@
 
 A super simple wxPython-based IDFVersionUpdater tool
 
-# Documentation [![Documentation Status](https://readthedocs.org/projects/idfversionupdater-20/badge/?version=latest)](http://idfversionupdater-20.readthedocs.io/en/latest/?badge=latest)
+# Documentation [![Documentation Status](http://readthedocs.org/projects/idfversionupdater-20/badge/?version=latest)](http://idfversionupdater-20.readthedocs.io/en/latest/?badge=latest)
 
 Project is documented on ReadTheDocs.
 
