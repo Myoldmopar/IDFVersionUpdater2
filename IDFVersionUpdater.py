@@ -1,6 +1,6 @@
 import wx
 
-from IDFVersionUpdater.IDFVersionUpdater import VersionUpdaterWindow, doing_restart
+from IDFVersionUpdater.VersionUpdaterWindow import VersionUpdaterWindow, doing_restart
 
 # we will keep the form in a loop to handle requested restarts (language change, etc.)
 running = True

@@ -57,10 +57,10 @@ Documentation of the source code, pretty much only important for the developers,
    :maxdepth: 2
 
    EnergyPlusPath
-   IDFVersionUpdater
    International
    TransitionBinary
    TransitionRunThread
+   VersionUpdaterWindow
 
 
 Indices and tables
