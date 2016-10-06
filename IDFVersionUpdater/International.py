@@ -32,7 +32,7 @@ EnglishDictionary = {
     'You must restart the app to make the language change take effect.  Would you like to restart now?':
         'You must restart the app to make the language change take effect.  Would you like to restart now?',
     'Old Version': 'Old Version',
-    'Keep Original Version?': 'Keep Original Version?',
+    'Keep Intermediate Versions of Files?': 'Keep Intermediate Versions of Files?',
     'Update File': 'Update File',
     'Close': 'Close',
     'Program Initialized': 'Program Initialized',
@@ -54,7 +54,7 @@ SpanishDictionary = {
     'You must restart the app to make the language change take effect.  Would you like to restart now?':
         'Debe reiniciar la aplicacion para que el cambio de idioma tenga efecto. Le gustaria reiniciar ahora?',
     'Old Version': 'Version antigua',
-    'Keep Intermediate Versions?': 'Mantener versiones intermedias?',
+    'Keep Intermediate Versions of Files?': 'Mantener versiones intermedias de Archivos?',
     'Update File': 'Actualizar archivo',
     'Close': 'Cerca',
 'Program Initialized': 'Program Initialized',
@@ -77,7 +77,7 @@ FrenchDictionary = {
     'You must restart the app to make the language change take effect.  Would you like to restart now?':
         'Vous devez relancer le logiciel pour effectuer le changement de langue. Voulez-vous relancer maintenant?',
     'Old Version': 'Ancienne version',
-    'Keep Intermediate Versions?': 'Gardez Versions intermediaires?',
+    'Keep Intermediate Versions of Files?': 'Gardez versions intermediaires de fichiers?',
     'Update File': 'Mise a jour de fichiers',
     'Close': 'Fermer',
 'Program Initialized': 'Program Initialized',

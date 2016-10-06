@@ -4,7 +4,6 @@ import subprocess
 import threading
 
 from International import translate as _
-# TODO: Add option to keep all intermediate files, not just the original -- use version numbers
 
 
 class TransitionRunThread(threading.Thread):
@@ -35,6 +34,23 @@ class TransitionRunThread(threading.Thread):
         self.cancelled = False
         threading.Thread.__init__(self)
 
+    def backup_file_before_transition(self, transition_instance):
+        input_file_name = os.path.basename(self.input_file)
+        source_file_path = os.path.join(self.run_dir, input_file_name)
+        input_file_name_parts = os.path.splitext(input_file_name)
+        target_backup_file_name = input_file_name_parts[0] + "_" + str(transition_instance.source_version) + input_file_name_parts[1]
+        target_backup_file_path = os.path.join(self.run_dir, target_backup_file_name)
+        if os.path.exists(target_backup_file_path):
+            try:
+                os.remove(target_backup_file_path)
+            except Exception:
+                return False
+        try:
+            shutil.copyfile(source_file_path, target_backup_file_path)
+        except Exception:
+            return False
+        return True
+
     def run(self):
         """
         This function runs the instantiated thread based on the parameters passed into the constructor.
@@ -44,10 +60,14 @@ class TransitionRunThread(threading.Thread):
         self.cancelled = False
         shutil.copy(self.input_file, self.run_dir)
         base_file_name = os.path.basename(self.input_file)
-        if self.keep_old:
-            shutil.copyfile(self.input_file, os.path.join(self.run_dir, 'before-transition-'+base_file_name))
         failed = False
+        cancelled = False
         for tr in self.transitions:
+            if self.keep_old:
+                backup_success = self.backup_file_before_transition(tr)
+                if not backup_success:
+                    failed = True
+                    break
             command_line_tokens = [
                 tr.full_path_to_binary,
                 base_file_name,

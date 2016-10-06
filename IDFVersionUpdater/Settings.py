@@ -26,6 +26,6 @@ def load_settings(settings_file_name):
 
 def save_settings(settings, settings_file_name):
     try:
-        json.dump(settings, open(settings_file_name, 'w'))
+        json.dump(settings, open(settings_file_name, 'w'), indent=2)
     except Exception:
         pass
