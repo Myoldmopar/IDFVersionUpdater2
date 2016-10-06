@@ -82,7 +82,7 @@ class TransitionRunThread(threading.Thread):
             self.std_out, self.std_err = self.p.communicate()
             if self.cancelled:
                 self.msg_callback(_("Transition Cancelled"))
-                # self.cancelled_callback()
+                break
             else:
                 if self.p.returncode == 0:
                     self.msg_callback(
@@ -92,7 +92,9 @@ class TransitionRunThread(threading.Thread):
                         _("Failed Transition") + " " + str(tr.source_version) + " -> " + str(tr.target_version))
                     failed = True
                     break
-        if failed:
+        if self.cancelled:
+            self.done_callback(_("Transition cancelled"))
+        elif failed:
             self.done_callback(_("Transition Failed! - Open run directory to read latest audit/error/etc"))
         else:
             self.done_callback(_("All transitions completed successfully - Open run directory for transitioned file"))
@@ -115,7 +117,6 @@ class TransitionRunThread(threading.Thread):
         This function allows attempting to stop the thread if it is running.
         This function polls the existing subprocess to see if it is running and attempts to kill the process
         """
-        # TODO: This only kills a single transition instance, not the entire series
         if self.p.poll() is None:
             self.msg_callback(_("Attempting to cancel simulation ..."))
             self.cancelled = True

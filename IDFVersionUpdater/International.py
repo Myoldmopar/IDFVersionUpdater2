@@ -35,6 +35,7 @@ EnglishDictionary = {
     'Keep Intermediate Versions of Files?': 'Keep Intermediate Versions of Files?',
     'Update File': 'Update File',
     'Close': 'Close',
+    'Cancel Run': 'Cancel Run',
     'Program Initialized': 'Program Initialized',
     'Running Transition': 'Running Transition',
     'Transition Cancelled': 'Transition Cancelled',
@@ -44,6 +45,7 @@ EnglishDictionary = {
         'All transitions completed successfully - Open run directory for transitioned file',
     'Could not open run directory': 'Could not open run directory',
     'Open Run Directory': 'Open Run Directory',
+    'Transition cancelled': 'Transition cancelled',
 }
 
 SpanishDictionary = {

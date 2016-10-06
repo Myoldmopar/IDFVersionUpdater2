@@ -50,6 +50,7 @@ class VersionUpdaterWindow(wx.Frame):
         self.chk_create_inter_versions = None
         self.btn_update_file = None
         self.btn_open_run_dir = None
+        self.btn_cancel = None
         self.btn_exit = None
         self.status_bar = None
         self.idf_version = None
@@ -107,6 +108,9 @@ class VersionUpdaterWindow(wx.Frame):
         self.chk_create_inter_versions.SetValue(True)
         self.btn_update_file = wx.Button(panel, wx.ID_ANY, _('Update File'))
         self.btn_update_file.Bind(wx.EVT_BUTTON, self.on_update_idf)
+        self.btn_cancel = wx.Button(panel, wx.ID_ANY, _('Cancel Run'))
+        self.btn_cancel.Bind(wx.EVT_BUTTON, self.on_cancel)
+        self.btn_cancel.Disable()
         self.btn_open_run_dir = wx.Button(panel, wx.ID_ANY, _('Open Run Directory'))
         self.btn_open_run_dir.Bind(wx.EVT_BUTTON, self.on_open_run_dir)
         self.btn_exit = wx.Button(panel, wx.ID_ANY, _('Close'))
@@ -121,6 +125,7 @@ class VersionUpdaterWindow(wx.Frame):
         path_version_sizer.Add(self.lbl_old_version, 1, flag=wx.ALIGN_RIGHT | wx.RIGHT, border=self.box_spacing)
         checkbox_sizer.Add(self.chk_create_inter_versions, 1, flag=wx.ALIGN_LEFT | wx.LEFT, border=self.box_spacing)
         update_audit_close_sizer.Add(self.btn_update_file, 1, flag=wx.ALIGN_LEFT | wx.LEFT, border=self.box_spacing)
+        update_audit_close_sizer.Add(self.btn_cancel, 1, flag=wx.ALIGN_LEFT | wx.LEFT, border=self.box_spacing)
         update_audit_close_sizer.Add(wx.StaticText(panel, -1, ''), 7, wx.EXPAND, border=self.box_spacing)
         update_audit_close_sizer.Add(self.btn_open_run_dir, 1, flag=wx.ALIGN_RIGHT | wx.RIGHT, border=self.box_spacing)
         update_audit_close_sizer.Add(self.btn_exit, 1, flag=wx.ALIGN_RIGHT | wx.RIGHT, border=self.box_spacing)
@@ -169,6 +174,11 @@ class VersionUpdaterWindow(wx.Frame):
             [x.Enable() for x in buttons]
         else:
             [x.Disable() for x in buttons]
+        buttons_to_invert = [self.btn_cancel]
+        if enabled:
+            [x.Disable() for x in buttons_to_invert]
+        else:
+            [x.Enable() for x in buttons_to_invert]
 
     # Event Handlers
 
@@ -300,6 +310,10 @@ class VersionUpdaterWindow(wx.Frame):
         self.running_transition_thread.start()
         self.set_buttons_for_running(enabled=False)
 
+    def on_cancel(self, event):
+        self.btn_cancel.Disable()
+        self.running_transition_thread.stop()
+
     def on_close(self, event):
         """
         This function handles the request to close the form, simply calling Close
@@ -363,7 +377,3 @@ class VersionUpdaterWindow(wx.Frame):
                 version_string_tokens = version_string.split('.')  # might be 2 or 3...
                 version_number = float("%s.%s" % (version_string_tokens[0], version_string_tokens[1]))
                 return version_number
-
-
-# TODO: Add a progress bar to allow watching the individual transition runs go
-# TODO: Add a cancel button, just steal it from the EPLaunchLite code
