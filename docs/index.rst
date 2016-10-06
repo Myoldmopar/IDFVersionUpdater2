@@ -12,9 +12,9 @@ Packaging and Installation
 The program is built by `Travis CI <https://travis-ci.org>`_ and packaged using `py2app <https://pythonhosted.org/py2app/>`_ to create a Mac-compatible program package.
 This package can then be *installed* onto the machine by placing it into the ``/Applications`` directory so that it can be launched via Spotlight or other means.
 
------------------
-Using the Program
------------------
+-------------------
+Program Main Window
+-------------------
 
 Launching the program reveals the following main window:
 
@@ -46,6 +46,21 @@ This main window reveals a lot of information.
   * ``Close`` obviously closes the program
 
 * The status bar shows updates during the program operation, including running each transition and when the whole transition is complete or if there was a failure
+
+----------------
+Typical Workflow
+----------------
+
+Consider a new version of EnergyPlus is released, version 17.0.  A user has built example files previously that are based on EnergyPlus 16.0.
+Instead of manually updating each input file, they will:
+
+* Open this IDFVersionUpdater utility, which is installed with the latest (17.0 in this example) version of EnergyPlus
+
+* Use the ``Choose File`` button to locate an idf from the previous version (16.0 in this example) and select it, verifying that the version label on the form properly reflects the expected version
+
+* Click the ``Update`` button to initiate the transition up to the latest version.  For this example, it would transition from 16 to 17 in one step.  If the original input file was an older version, multiple transition steps would be performed to get to the latest version
+
+* The user would then click the ``Open Run Directory`` button to open a window to the new input file, and copy it to be placed back into the user's desired location to be run with the latest version (17.0 in this example)
 
 -------------------------
 Source Code Documentation
