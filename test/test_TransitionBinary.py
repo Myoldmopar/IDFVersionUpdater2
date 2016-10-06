@@ -5,7 +5,7 @@ import unittest
 # add the source directory to the path so the unit test framework can find it
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'IDFVersionUpdater'))
 
-from EnergyPlusPath import TransitionBinary
+from TransitionBinary import TransitionBinary
 
 
 class TestTransitionBinary(unittest.TestCase):
@@ -29,8 +29,3 @@ class TestTransitionBinary(unittest.TestCase):
         invalid_path = "/Applications/EnergyPlus-8-5-0/PreProcess/IDFVersionUpdater/BadBinaryName"
         with self.assertRaises(Exception):
             TransitionBinary(invalid_path)
-
-
-# allow execution directly as python tests/test_ghx.py
-if __name__ == '__main__':
-    unittest.main()

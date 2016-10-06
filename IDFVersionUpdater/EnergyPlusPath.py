@@ -1,28 +1,8 @@
 import glob
 import os
-# TODO: Clean out unused functions here
+from TransitionBinary import TransitionBinary
 # TODO: Really nice to just make this a full class instead of just a collection of static functions
 # TODO: Cross platform this whole thing
-
-
-class TransitionBinary(object):
-    """
-    This class describes a single transition binary in the installation
-    The class is constructed from the full path to the binary, then source and target versions are parsed from this path and the filenames
-
-    :param full_path: Full path to the transition binary itself
-
-    :ivar full_path_to_binary: Copy of the full path to binary passed into the constructor
-    :ivar binary_name: This is just the filename portion of the binary executable
-    :ivar source_version: This is the source version of this particular transition, for example, in V8-5-0-to-8-6-0, this will be 8.5
-    :ivar target_version: This is the target version of this particular transition, for example, in V8-5-0-to-8-6-0, this will be 8.6
-    """
-
-    def __init__(self, full_path):
-        self.full_path_to_binary = full_path
-        self.binary_name = os.path.basename(full_path)
-        self.source_version = float(self.binary_name[12:15].replace('-', '.'))
-        self.target_version = float(self.binary_name[22:25].replace('-', '.'))
 
 
 class EnergyPlusPath(object):
@@ -91,7 +71,7 @@ class EnergyPlusPath(object):
         This function returns a list of transition instances available in a given transition run directory
 
         :param transition_run_directory: A transition directory within a given EnergyPlus installation, as would be returned by :py:meth:`EnergyPlusPath.get_transition_run_dir`
-        :rtype: A list of :py:class:`TransitionBinary` instances available in this installation
+        :rtype: A list of :py:class:`TransitionBinary <TransitionBinary.TransitionBinary>` instances available in this installation
         """
         binary_paths = glob.glob(os.path.join(transition_run_directory, 'Transition-V*'))
         return [TransitionBinary(x) for x in binary_paths]

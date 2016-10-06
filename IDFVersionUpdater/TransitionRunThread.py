@@ -11,7 +11,7 @@ class TransitionRunThread(threading.Thread):
     """
     This class allows easily running a series of EnergyPlus Transition program versions in a separate thread
 
-    :param transitions_to_run: A list of instantiated :py:class:`TransitionBinary` instances to be run
+    :param transitions_to_run: A list of :py:class:`TransitionBinary <TransitionBinary.TransitionBinary>` instances to be run
     :param working_directory: The transition working directory to run transitions in
     :param original_file_path: The absolute file path to the file to be transitioned
     :param keep_old: A boolean flag for whether to keep an extra backup of the original file to be transitioned in the run folder
