@@ -1,13 +1,24 @@
+# TODO: Flesh out languages
+
 class Languages:
-    English = 301  # 'english'
-    Spanish = 302  # 'spanish'
-    French = 303  # 'french'
+    """
+    This class is a simple enumeration container for the different languages implemented
+    """
+
+    English = 301
+    Spanish = 302
+    French = 303
 
 
+# This variable is a global parameter to hold the language state for the running program
 CurrentLanguage = Languages.English
 
 
 def set_language(lang):
+    """
+    This is the interface for changing the language, call this, save settings, then restart the program
+    :param lang: A language identifier from the :py:class:`Languages` enumeration class
+    """
     global CurrentLanguage
     CurrentLanguage = lang
 
@@ -81,6 +92,11 @@ FrenchDictionary = {
 
 
 def report_missing_keys():
+    """
+    This function simply scans dictionaries to see if any keys are missing from them compared to a baseline.
+    The baseline is currently the English dictionary.
+    This function simply reports to the terminal.
+    """
     base_keys = EnglishDictionary.keys()
     for dict_name, dictionary in {'Spanish': SpanishDictionary, 'French': FrenchDictionary}.iteritems():  # add here
         print("Processing missing keys from dictionary: " + dict_name)
@@ -90,6 +106,12 @@ def report_missing_keys():
 
 
 def translate(key):
+    """
+    This function translates a string into a dictionary.
+
+    :param key: The string to translate
+    :return: The translated string
+    """
     # if for some reason blank, just return blank
     if key is None or key == "":
         return ""

@@ -7,7 +7,21 @@ from International import translate as _
 # TODO: Add option to keep all intermediate files, not just the original -- use version numbers
 
 
-class EnergyPlusThread(threading.Thread):
+class TransitionRunThread(threading.Thread):
+    """
+    This class allows easily running a series of EnergyPlus Transition program versions in a separate thread
+
+    :param transitions_to_run: A list of instantiated :py:class:`TransitionBinary` instances to be run
+    :param working_directory: The transition working directory to run transitions in
+    :param original_file_path: The absolute file path to the file to be transitioned
+    :param keep_old: A boolean flag for whether to keep an extra backup of the original file to be transitioned in the run folder
+    :param msg_callback: A Python function to be called back by this thread when a message can be displayed
+    :param done_callback: A Python function to be called back by this thread when the transition process is complete
+
+    :ivar std_out: The standard output from the transition process
+    :ivar std_err: The standard error output from the transition process
+    """
+
     def __init__(self, transitions_to_run, working_directory, original_file_path, keep_old, msg_callback, done_callback):
         self.p = None
         self.std_out = None
@@ -22,6 +36,11 @@ class EnergyPlusThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
+        """
+        This function runs the instantiated thread based on the parameters passed into the constructor.
+        The function intermittently calls the msg_callback class instance function variable to alert the calling thread of status updates.
+        When the function is complete it calls the done_callback class instance function variable to alert the calling thread.
+        """
         self.cancelled = False
         shutil.copy(self.input_file, self.run_dir)
         base_file_name = os.path.basename(self.input_file)
@@ -60,11 +79,23 @@ class EnergyPlusThread(threading.Thread):
 
     @staticmethod
     def get_ep_version(run_script):
+        """
+        This function returns a human friendly version identifier for a given EnergyPlus binary.
+        This function relies on the ``-v`` flag for the EnergyPlus binary
+
+        :param run_script: Absolute path to an EnergyPlus main binary
+        :rtype: Returns a human friendly EnergyPlus version identifier; the exact format is not defined
+        """
         p = subprocess.Popen([run_script, '-v'], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         std_out, std_err = p.communicate()
         return std_out.strip()
 
     def stop(self):
+        """
+        This function allows attempting to stop the thread if it is running.
+        This function polls the existing subprocess to see if it is running and attempts to kill the process
+        """
+        # TODO: This only kills a single transition instance, not the entire series
         if self.p.poll() is None:
             self.msg_callback(_("Attempting to cancel simulation ..."))
             self.cancelled = True

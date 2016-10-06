@@ -57,7 +57,7 @@ Documentation of the source code, pretty much only important for the developers,
    :maxdepth: 2
 
    EnergyPlusPath
-   EnergyPlusThread
+   TransitionRunThread
    IDFVersionUpdater
    International
 

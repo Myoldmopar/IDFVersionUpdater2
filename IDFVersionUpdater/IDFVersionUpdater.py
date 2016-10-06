@@ -4,7 +4,7 @@ import subprocess
 import wx
 
 from EnergyPlusPath import EnergyPlusPath
-from EnergyPlusThread import EnergyPlusThread
+from TransitionRunThread import TransitionRunThread
 from International import translate as _, Languages, set_language
 from Settings import Keys, load_settings, save_settings
 
@@ -14,6 +14,10 @@ _doing_restart = False
 
 
 def doing_restart():
+    """
+    This function exposes the private, global, variable to determine if the program is going through an automated restart
+    :return: True if the program should be restarted after reloaded settings, or False to just let the program be done
+    """
     return _doing_restart
 
 
@@ -63,7 +67,7 @@ class VersionUpdaterWindow(wx.Frame):
         # update the list of E+ versions
         self.ep_run_folder = EnergyPlusPath.get_latest_eplus_version()
         self.SetTitle(
-            __program_name__ + " -- " + EnergyPlusThread.get_ep_version(os.path.join(self.ep_run_folder, 'EnergyPlus')))
+            __program_name__ + " -- " + TransitionRunThread.get_ep_version(os.path.join(self.ep_run_folder, 'EnergyPlus')))
         self.status_bar.SetStatusText(_("Program Initialized"))
         self.transition_run_dir = EnergyPlusPath.get_transition_run_dir(self.ep_run_folder)
         self.transitions_available = EnergyPlusPath.get_transitions_available(self.transition_run_dir)
@@ -202,7 +206,7 @@ class VersionUpdaterWindow(wx.Frame):
             if tr.source_version < self.idf_version:
                 continue  # skip this older version
             transitions_to_run.append(tr)
-        self.running_transition_thread = EnergyPlusThread(
+        self.running_transition_thread = TransitionRunThread(
             transitions_to_run,
             self.transition_run_dir,
             self.settings[Keys.last_idf],

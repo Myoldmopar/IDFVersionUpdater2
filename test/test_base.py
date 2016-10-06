@@ -1,44 +1,34 @@
 import os
 import sys
 import unittest
-# import threading
-# TODO: Lots more testing
-
 
 # add the source directory to the path so the unit test framework can find it
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'IDFVersionUpdater'))
 
-
-from EnergyPlusPath import EnergyPlusPath
-# from EnergyPlusThread import EnergyPlusThread
+from EnergyPlusPath import TransitionBinary
 
 
-class TestEnergyPlusPaths(unittest.TestCase):
-    def test_proper_path_no_trailing_slash(self):
-        eight_one = EnergyPlusPath.get_version_number_from_path('/Applications/EnergyPlus-8-1-0')
-        self.assertEqual(eight_one, '8-1-0')
+class TestTransitionBinary(unittest.TestCase):
+    def test_good_transition_object(self):
+        valid_path = "/Applications/EnergyPlus-8-5-0/PreProcess/IDFVersionUpdater/Transition-V8-5-0-to-V8-6-0"
+        valid_object = TransitionBinary(valid_path)
+        self.assertEqual(valid_object.full_path_to_binary, valid_path)
+        self.assertEqual(valid_object.binary_name, "Transition-V8-5-0-to-V8-6-0")
+        self.assertEqual(valid_object.source_version, 8.5)
+        self.assertEqual(valid_object.target_version, 8.6)
 
-    def test_proper_path_with_trailing_slash(self):
-        eight_one = EnergyPlusPath.get_version_number_from_path('/Applications/EnergyPlus-8-1-0/')
-        self.assertEqual(eight_one, '8-1-0')
+    def test_transition_object_just_file_name(self):
+        just_file_name = "Transition-V8-5-0-to-V8-6-0"
+        just_file_name_object = TransitionBinary(just_file_name)
+        self.assertEqual(just_file_name_object.full_path_to_binary, just_file_name)
+        self.assertEqual(just_file_name_object.binary_name, "Transition-V8-5-0-to-V8-6-0")
+        self.assertEqual(just_file_name_object.source_version, 8.5)
+        self.assertEqual(just_file_name_object.target_version, 8.6)
 
-    def test_bad_path_with_enough_tokens(self):
-        eight_one = EnergyPlusPath.get_version_number_from_path('/usr/local/EnergyPlus-8-1-0')
-        self.assertIsNone(eight_one)
-
-    def test_bad_path_not_enough_tokens(self):
-        with self.assertRaises(IndexError):
-            EnergyPlusPath.get_version_number_from_path('/EnergyPlus-8-1-0')
-
-
-# class TestEnergyPlusThread(unittest.TestCase):
-#     def test_construction(self):
-#         paths = ['/dummy/', '/path', '/to_nothing']
-#         obj = EnergyPlusThread(paths[0], paths[1], paths[2], None, None, None, None)
-#         self.assertTrue(isinstance(obj, threading.Thread))
-#         self.assertTrue(obj.run_script, paths[0])
-#         self.assertTrue(obj.input_file, paths[1])
-#         self.assertTrue(obj.weather_file, paths[2])
+    def test_bad_transition_object(self):
+        invalid_path = "/Applications/EnergyPlus-8-5-0/PreProcess/IDFVersionUpdater/BadBinaryName"
+        with self.assertRaises(Exception):
+            TransitionBinary(invalid_path)
 
 
 # allow execution directly as python tests/test_ghx.py
