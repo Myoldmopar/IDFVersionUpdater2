@@ -75,7 +75,8 @@ class VersionUpdaterWindow(wx.Frame):
         # check the validity of the idf versions once at load time to initialize the action availability
         self.on_update_for_new_file(None)
 
-# GUI Worker Functions
+    # GUI Worker Functions
+
     def build_gui(self):
         """
         This function manages the window construction, including position, title, and presentation
@@ -170,9 +171,8 @@ class VersionUpdaterWindow(wx.Frame):
         else:
             [x.Disable() for x in buttons]
 
-# GUI Event Handlers
+    # Event Handlers
 
-# GUI Event Handlers
     def on_switch_language(self, event):
         """
         This function handles the request to change languages, where the language identifier is passed in with the event
@@ -208,7 +208,7 @@ class VersionUpdaterWindow(wx.Frame):
         self.settings[Keys.last_idf] = idf
         if os.path.exists(idf):
             self.on_msg("IDF File exists, ready to go")
-            self.idf_version = EnergyPlusPath.get_idf_version(idf)
+            self.idf_version = self.get_idf_version(idf)
             self.lbl_old_version.SetLabel("%s: %s" % (_('Old Version'), self.idf_version))
             self.btn_update_file.Enable()
         else:
@@ -223,9 +223,13 @@ class VersionUpdaterWindow(wx.Frame):
         try:
             subprocess.Popen(['open', self.transition_run_dir], shell=False)
         except Exception:
-            self.simple_error_dialog(
-                _("Could not open run directory")
-            )
+            message = wx.MessageDialog(
+                parent=self,
+                message=_("Could not open run directory"),
+                caption=__program_name__,
+                style=wx.OK | wx.CENTRE | wx.ICON_WARNING)
+            message.ShowModal()
+            message.Destroy()
 
     def on_closing_form(self, event):
         """
@@ -305,7 +309,8 @@ class VersionUpdaterWindow(wx.Frame):
         """
         self.Close(False)
 
-# Callback functions and delegates to be called on MainLoop thread
+    # Callback functions and delegates to be called on MainLoop thread
+
     def callback_on_msg(self, message):
         wx.CallAfter(self.on_msg, message)
 
@@ -318,6 +323,48 @@ class VersionUpdaterWindow(wx.Frame):
     def on_done(self, message):
         self.status_bar.SetStatusText(message)
         self.set_buttons_for_running(enabled=True)
+
+    # Utilities
+
+    @staticmethod
+    def get_idf_version(path_to_idf):
+        """
+        This function returns the current version of a given input file.
+        The function uses a simplified parsing approach so it only works for valid syntax files, and provides no specialized error handling
+
+        :param path_to_idf: Absolute path to a EnergyPlus input file
+        :rtype: A floating point version number for the input file, for example 8.5 for an 8.5.0 input file
+        """
+        # phase 1: read in lines of file
+        with open(path_to_idf, "r") as fo:
+            lines = fo.readlines()
+        # phases 2: remove comments and blank lines
+        lines_a = []
+        for line in lines:
+            line_text = line.strip()
+            this_line = ""
+            if len(line_text) > 0:
+                exclamation = line_text.find("!")
+                if exclamation == -1:
+                    this_line = line_text
+                elif exclamation == 0:
+                    this_line = ""
+                elif exclamation > 0:
+                    this_line = line_text[:exclamation]
+                if not this_line == "":
+                    lines_a.append(this_line)
+        # phase 3: join entire array and re-split by semicolon
+        idf_data_joined = ''.join(lines_a)
+        idf_object_strings = idf_data_joined.split(";")
+        # phase 4: break each object into an array of object name and field values
+        for this_object in idf_object_strings:
+            tokens = this_object.split(',')
+            if tokens[0].upper() == "VERSION":
+                version_string = tokens[1]
+                version_string_tokens = version_string.split('.')  # might be 2 or 3...
+                version_number = float("%s.%s" % (version_string_tokens[0], version_string_tokens[1]))
+                return version_number
+
 
 # TODO: Add a progress bar to allow watching the individual transition runs go
 # TODO: Add a cancel button, just steal it from the EPLaunchLite code
