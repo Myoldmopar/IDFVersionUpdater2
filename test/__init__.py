@@ -1,2 +1,2 @@
-from test_base import TestTransitionBinary
+from test_TransitionBinary import TestTransitionBinary
 from test_EnergyPlusPath import TestEnergyPlusPaths
