@@ -1,5 +1,6 @@
 # TODO: Flesh out languages
 
+
 class Languages:
     """
     This class is a simple enumeration container for the different languages implemented
