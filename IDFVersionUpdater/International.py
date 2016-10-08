@@ -1,11 +1,11 @@
-# TODO: Flesh out languages
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 
 class Languages:
     """
     This class is a simple enumeration container for the different languages implemented
     """
-
     English = 301
     Spanish = 302
     French = 303
@@ -13,16 +13,6 @@ class Languages:
 
 # This variable is a global parameter to hold the language state for the running program
 CurrentLanguage = Languages.English
-
-
-def set_language(lang):
-    """
-    This is the interface for changing the language, call this, save settings, then restart the program
-    :param lang: A language identifier from the :py:class:`Languages` enumeration class
-    """
-    global CurrentLanguage
-    CurrentLanguage = lang
-
 
 EnglishDictionary = {
     'ABOUT_DIALOG': 'This program was created by NREL for the United States Department of Energy.',
@@ -45,7 +35,10 @@ EnglishDictionary = {
         'All transitions completed successfully - Open run directory for transitioned file',
     'Could not open run directory': 'Could not open run directory',
     'Open Run Directory': 'Open Run Directory',
-    'Transition cancelled': 'Transition cancelled',
+    'Cannot find a matching transition tool for this idf version': 'Cannot find a matching transition tool for this idf version',
+    'Open File for Transition': '',
+    'IDF File doesn\'t exist at path given; cannot transition': '',
+    'IDF File exists, ready to go': ''
 }
 
 SpanishDictionary = {
@@ -59,17 +52,25 @@ SpanishDictionary = {
     'Keep Intermediate Versions of Files?': 'Mantener versiones intermedias de Archivos?',
     'Update File': 'Actualizar archivo',
     'Close': 'Cerca',
-'Program Initialized': 'Program Initialized',
-    'Running Transition': 'Running Transition',
-    'Transition Cancelled': 'Transition Cancelled',
-    'Completed Transition': 'Completed Transition',
-    'Failed Transition': 'Failed Transition',
+    'Cancel Run': 'Cancelar Ejecutar',
+    'Program Initialized': 'Programa Initialized',
+    'Running Transition': 'Transición corriendo',
+    'Transition Cancelled': 'transición Cancelado',
+    'Completed Transition': 'Transición completado',
+    'Failed Transition': 'La transición fallida',
     'All transitions completed successfully - Open run directory for transitioned file':
-        'All transitions completed successfully - Open run directory for transitioned file',
-    'Could not open run directory': 'Could not open run directory',
-    'Open Run Directory': 'Open Run Directory',
-}
+        'Todas las transiciones completada con éxito - Abrir directorio de ejecución para el archivo de la transición',
+    'Could not open run directory': 'No se pudo abrir directorio de ejecución',
+    'Open Run Directory': 'Directorio de ejecución abierta',
+    'Cannot find a matching transition tool for this idf version':
+        'No se puede encontrar una herramienta de transición a juego para esta versión de la FID',
+    'Open File for Transition': 'Abrir archivo para la Transición',
+    'IDF File doesn\'t exist at path given; cannot transition':
+        'IDF El archivo no existe en la ruta dada; no puede transición',
+    'IDF File exists, ready to go': 'existe IDF del archivo, listo para ir'
 
+
+}
 
 FrenchDictionary = {
     'ABOUT_DIALOG': 'Ce logiciel a ete cree par NREL pour United States Department of Energy.',
@@ -82,16 +83,32 @@ FrenchDictionary = {
     'Keep Intermediate Versions of Files?': 'Gardez versions intermediaires de fichiers?',
     'Update File': 'Mise a jour de fichiers',
     'Close': 'Fermer',
-'Program Initialized': 'Program Initialized',
-    'Running Transition': 'Running Transition',
-    'Transition Cancelled': 'Transition Cancelled',
-    'Completed Transition': 'Completed Transition',
-    'Failed Transition': 'Failed Transition',
+    'Cancel Run': 'Annuler Run',
+    'Program Initialized': 'Programme initialisé',
+    'Running Transition': 'Transition en cours',
+    'Transition Cancelled': 'transition Annulé',
+    'Completed Transition': 'transition Terminé',
+    'Failed Transition': 'transition Échec',
     'All transitions completed successfully - Open run directory for transitioned file':
-        'All transitions completed successfully - Open run directory for transitioned file',
-    'Could not open run directory': 'Could not open run directory',
-    'Open Run Directory': 'Open Run Directory',
+        'Toutes les transitions complété avec succès - répertoire d\'exécution Ouvert pour le fichier transition',
+    'Could not open run directory': 'Impossible d\'ouvrir le répertoire run',
+    'Open Run Directory': 'Open Directory Run',
+    'Cannot find a matching transition tool for this idf version':
+        'Vous ne pouvez pas trouver un outil de transition correspondant pour cette version idf',
+    'Open File for Transition': 'Ouvrir un fichier pour la transition',
+    'IDF File doesn\'t exist at path given; cannot transition':
+        'IDF fichier n\'existe pas au chemin donné; ne peut pas passer',
+    'IDF File exists, ready to go': 'IDF fichier existe, prêt à aller'
 }
+
+
+def set_language(lang):
+    """
+    This is the interface for changing the language, call this, save settings, then restart the program
+    :param lang: A language identifier from the :py:class:`Languages` enumeration class
+    """
+    global CurrentLanguage
+    CurrentLanguage = lang
 
 
 def report_missing_keys():
