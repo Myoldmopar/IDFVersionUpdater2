@@ -1,4 +1,9 @@
 from setuptools import setup
+from sys import platform
+
+
+if platform.startswith('win'):
+    import py2exe
 
 # set up common things
 APP = ['IDFVersionUpdater.py']
@@ -15,6 +20,7 @@ setup(
     app=APP,
     options={'py2app': py2app_options},
     version="2.0.0",
+    console='IDFVersionUpdator',
 )
 
 # TODO: Fix cross platform support

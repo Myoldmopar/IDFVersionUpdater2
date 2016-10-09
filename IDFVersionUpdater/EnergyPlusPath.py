@@ -32,6 +32,7 @@ class EnergyPlusPath(object):
         self.transition_directory = self.get_transition_run_dir()
         self.transitions_available = self.get_transitions_available()
 
+    # TODO: Move this to a standalone path class, change to enums
     @staticmethod
     def get_platform():
         from sys import platform as _platform

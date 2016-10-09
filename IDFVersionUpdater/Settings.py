@@ -1,5 +1,6 @@
 import json
 import os
+from sys import platform
 
 from International import Languages
 
@@ -18,7 +19,10 @@ def load_settings(settings_file_name):
     if Keys.last_idf_folder not in settings:
         settings[Keys.last_idf_folder] = os.path.expanduser("~")
     if Keys.last_idf not in settings:
-        settings[Keys.last_idf] = '/path/to/idf'
+        if platform.startswith("win"):
+            settings[Keys.last_idf] = 'C:\\Path\\to.idf'
+        else:
+            settings[Keys.last_idf] = '/path/to.idf'
     if Keys.language not in settings:
         settings[Keys.language] = Languages.English
     return settings
