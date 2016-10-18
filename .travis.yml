@@ -3,7 +3,7 @@ os:
 before_install:
 - brew update
 install:
-- brew install python wxpython
+- brew install wxpython
 - pip install py2app
 script:
 - make tests
