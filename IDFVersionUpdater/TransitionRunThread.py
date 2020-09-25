@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import threading
 
-from International import translate as _
+from .International import translate as _
 
 
 class TransitionRunThread(threading.Thread):

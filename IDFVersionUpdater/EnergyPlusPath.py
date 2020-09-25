@@ -1,6 +1,6 @@
 import glob
 import os
-from TransitionBinary import TransitionBinary
+from .TransitionBinary import TransitionBinary
 
 
 class EnergyPlusPath(object):

@@ -73,32 +73,32 @@ SpanishDictionary = {
 }
 
 FrenchDictionary = {
-    'ABOUT_DIALOG': 'Ce logiciel a ete cree par NREL pour United States Department of Energy.',
-    'Choose File to Update...': 'Choisissez Fichier pour mettre a jour ...',
-    'About...': 'Sur...',
+    'ABOUT_DIALOG': 'Ce logiciel a été créé par NREL pour le Departement de l\'Energie des Etats Unis d\'Amérique (US DOE)',
+    'Choose File to Update...': 'Choisissez un Fichier à mettre à jour ...',
+    'About...': 'A propos...',
     'File Path': 'Chemin du fichier',
     'You must restart the app to make the language change take effect.  Would you like to restart now?':
         'Vous devez relancer le logiciel pour effectuer le changement de langue. Voulez-vous relancer maintenant?',
     'Old Version': 'Ancienne version',
-    'Keep Intermediate Versions of Files?': 'Gardez versions intermediaires de fichiers?',
-    'Update File': 'Mise a jour de fichiers',
+    'Keep Intermediate Versions of Files?': 'Garder les versions intermediaires des fichiers?',
+    'Update File': 'Mettre à jour',
     'Close': 'Fermer',
-    'Cancel Run': 'Annuler Run',
+    'Cancel Run': 'Annuler l\'éxécution',
     'Program Initialized': 'Programme initialisé',
     'Running Transition': 'Transition en cours',
-    'Transition Cancelled': 'transition Annulé',
-    'Completed Transition': 'transition Terminé',
-    'Failed Transition': 'transition Échec',
+    'Transition Cancelled': 'Transition annulée',
+    'Completed Transition': 'Transition terminée',
+    'Failed Transition': 'Echec de la Transition',
     'All transitions completed successfully - Open run directory for transitioned file':
-        'Toutes les transitions complété avec succès - répertoire d\'exécution Ouvert pour le fichier transition',
-    'Could not open run directory': 'Impossible d\'ouvrir le répertoire run',
-    'Open Run Directory': 'Open Directory Run',
+        'Toutes les transitions effectuées avec succès - Ouvrir le répertoire du fichier mis à jour',
+    'Could not open run directory': 'Impossible d\'ouvrir le répertoire d\'éxecution',
+    'Open Run Directory': 'Ouvrir le répertoire d\'éxécution',
     'Cannot find a matching transition tool for this idf version':
-        'Vous ne pouvez pas trouver un outil de transition correspondant pour cette version idf',
+        'Impossible de trouver un utilitaire de Transition pour cette version d\'IDF',
     'Open File for Transition': 'Ouvrir un fichier pour la transition',
     'IDF File doesn\'t exist at path given; cannot transition':
-        'IDF fichier n\'existe pas au chemin donné; ne peut pas passer',
-    'IDF File exists, ready to go': 'IDF fichier existe, prêt à aller'
+        'IDF fichier n\'existe pas au chemin donné; transition impossible',
+    'IDF File exists, ready to go': 'Le fichier IDF existe, prêt.'
 }
 
 
